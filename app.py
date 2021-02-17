@@ -59,4 +59,4 @@ def home():
 
 @app.route('/about')
 def about():
-	return "About Us"    
+	return "About WI Shop"
