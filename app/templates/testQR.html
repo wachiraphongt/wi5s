@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEST QR CODE</title>
+
+    <!-- qrcode-reader core CSS file -->
+    <link rel="stylesheet" href="../static/css/qrcode-reader.min.css">
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- qrcode-reader core JS file-->
+    <script src="../static/js/qrcode-reader.min.js"></script>
+
+</head>
+
+
+<body>
+    <form>
+        <input id="single" type="text" size="50">
+        <button type="button" class="qrcode-reader" id="openreader-single" data-qrr-target="#single"
+            data-qrr-audio-feedback="false" data-qrr-qrcode-regexp="^https?:\/\/">Read QRCode</button>
+
+    </form>
+
+
+    <script>
+
+        $(function () {
+            // overriding path of JS script and audio 
+            // $.qrCodeReader.jsQRpath = "../static/js/jsQR/jsQR.min.js";
+            $.qrCodeReader.jsQRpath = "https://cdn.staticaly.com/gh/mauntrelio/qrcode-reader/master/dist/js/jsQR/jsQR.min.js";
+            // $.qrCodeReader.beepPath = "https://cdn.staticaly.com/gh/mauntrelio/qrcode-reader/master/dist/audio/beep.mp3";
+
+            // bind all elements of a given class
+            $(".qrcode-reader").qrCodeReader();
+        });
+    </script>
+
+</body>
+
+
+</html>
