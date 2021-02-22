@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block title %}<title>Part Register</title>{% endblock title %}
+
+{% block content %}
+
+<div class="container">
+    <div class="btn-group">
+        <button type="button" class="btn btn-primary btn-round btn-lg">Project Register</button>
+        <button type="button" class="btn btn-primary btn-round btn-lg">Project Edit</button>
+    </div>
+
+</div>
+
+<div class="container">
+    <table id="partTable" class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Part Name</th>
+                <th scope="col">Qty.</th>
+                <th scope="col">Location</th>
+                <th scope="col">Project Name</th>
+                <th scope="col">Modfy Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+    </table>
+</div>
+
+<div class="container">
+    <div class="btn-group">
+        <button type="button" id="btn-add" class="btn btn-danger btn-sm" data-toggle="modal"
+            data-target="#addModal">Add</button>
+        <button type="button" id="btn-edit" class="btn btn-danger btn-sm">Edit</button>
+        <button type="button" id="btn-del" class="btn btn-danger btn-sm">Delete</button>
+        <button type="button" id="btn-bcode" class="btn btn-danger btn-sm">Barcode Print</button>
+    </div>
+</div>
+
+<!-- end of content Section -->
+
+<!-- Add Part Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="partAdd" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4><i class="material-icons">library-add</i> Part Add</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <!-- Input Part Name -->
+                <form role="form">
+                    <div class="form-group">
+                        <label for="partName">Part
+                            Name</label>
+                        <input type="text" class="form-control" id="partName" placeholder="Enter part name">
+                    </div>
+                <!-- Input Part Qty. -->
+                    <div class="form-group">
+                        
+                        <label for="partQty">Part
+                            Quatity</label>
+                        <input type="text" class="form-control" id="partQty" placeholder="Enter Qty">
+                    </div>
+                <!-- Input Select Location -->
+                <div class="form-group">
+                    <label for="partLocate">Part
+                        Location</label>
+                    <select class="form-control" id="partLocate">
+                        <optgroup label="Assembly Room 1">
+                            <option>CB771662</option>
+                            <option>CB187128</option>
+                        </optgroup>
+
+                        <optgroup label="Assembly Room 2">
+                            <option>CB1000201</option>
+                            <option>CB1203991</option>
+                        </optgroup>
+
+                        <optgroup label="Assembly Room 3">
+                            <option>CB122139</option>
+                            <option>CB771362</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <!-- Input Select Prject     -->
+                <div class="form-group">
+                        <label for="partProject">Project
+                            Select</label>
+                        <select class="form-control" id="partProject">
+                            <optgroup label="Robot Team">
+                                <option>Project A</option>
+                                <option>Project B</option>
+                            </optgroup>
+
+                            <optgroup label="Testing Team">
+                                <option>Project C</option>
+                                <option>Project D</option>
+                            </optgroup>
+
+                            <optgroup label="LCA Team">
+                                <option>Project E</option>
+                                <option>Project F</option>
+                            </optgroup>
+
+                            <optgroup label="Smart Assembly Team">
+                                <option>Project G</option>
+                                <option>Project H</option>
+                            </optgroup>
+
+                            <optgroup label="Other">
+                                <option>Project I</option>
+                                <option>Project J</option>
+                            </optgroup>
+                        </select>
+                    </div>                 
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="addPart()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function addPart() {
+        let table = document.getElementById("partTable");
+        let time_ = new Date();
+        let curTime = time_.toDateString();
+
+        let row = table.insertRow(-1);
+
+        let cellNum = row.insertCell(0);
+        let cellName = row.insertCell(1);
+        let cellQty = row.insertCell(2);
+        let cellLocate = row.insertCell(3);
+        let cellProject = row.insertCell(4);
+       
+        let cellDate = row.insertCell(5);
+
+        cellNum.innerHTML = "1";
+        cellName.innerHTML = document.getElementById("partName").value;
+        cellQty.innerHTML = document.getElementById("partQty").value;
+        cellLocate.innerHTML = document.getElementById("partLocate").value;
+        cellProject.innerHTML = document.getElementById("partProject").value;
+        cellDate.innerHTML = curTime;
+    }
+</script>
+
+{% endblock content %}

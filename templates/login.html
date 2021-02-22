@@ -1,0 +1,42 @@
+<!-- login.html -->
+{% extends 'base.html' %}
+
+{% block title %}<title>Login</title>{% endblock %}
+
+{% block content %}
+
+<!-- <br> -->
+<div class="container" style="align-items: center;">
+    <h2>Login</h2>
+    <div class="row">
+        <div class="col-lg-5">
+            <from action="{{url_for('login')}}" method="POST">
+                {{form.csrf_token}}
+                <br>
+                <!-- Employee ID -->
+                <div class="form-group">
+                    <label>Emp. ID</label>
+                    <input type="number" class="form-control" name="EmpID" placeholder="">
+                </div>
+                <!-- Password -->
+                <br>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" class="form-control" name="Password" placeholder="">
+                </div>
+                <!-- Button for summiting form -->
+                <br>
+                <div style="text-align: center;">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </div>
+                <br>
+                <!-- text for choices -->
+                <div style="text-align: center;">
+                    <p>Didn't have an account ? <a href="{{url_for('sign_up')}}">Sign up</a></p>
+                </div>
+            </from>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
