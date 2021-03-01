@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test jQuery</title>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+    <script>
+        $(document).ready(function(e) {
+            $("#add-row").click(function() { 
+                let name =$("#name").val();
+                let email = $("#email").val();
+                let markup = "<tr><td><input type='checkbox' name='record'></td><td>" + name + "</td><td>" + email + "</td></tr>";
+                $("table tbody").append(markup);
+                
+                e.preventDefault();
+                
+            });
+        });
+    </script>
+</head>
+
+<body>
+
+    <form>
+        <input type="text" id="name" placeholder="Name">
+        <input type="text" id="email" placeholder="Email Address">
+        <input type="button" id="add-row" value="Add Row">
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Select</th>
+                <th>Name</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="checkbox" name="record"></td>
+                <td>Peter Parker</td>
+                <td>peterparker@mail.com</td>
+            </tr>
+        </tbody>
+    </table>
+    <button type="button" class="delete-row">Delete Row</button>
+    
+</body>
+</html>
