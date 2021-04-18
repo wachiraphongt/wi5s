@@ -46,16 +46,18 @@ class Log(db.Model):
 class User(UserMixin, db.Model):
     """ Create column to store out data """
 
-    EmpID = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    EmpID = db.Column(db.Integer, nullable=False)
     Password = db.Column(db.Text, nullable=False)
     Name = db.Column(db.Text, nullable=False)
     Role = db.Column(db.Integer, nullable=False)
-    ResetPass = db.Column(db.Boolean, default=True)
+    ResetPass = db.Column(db.Boolean, nullable=True, default=True)
+    LastUpdated = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
-        return f"<User {self.id}>"
+        return f"<User {self.EmpID}>"
 
-    def __init__(self, EmpID, Password, Name, Role, ResetPass):
+    def __init__(self, EmpID, Password, Name, Role, ResetPass = True):
         self.EmpID = EmpID
         self.Password = Password
         self.Name = Name
@@ -87,6 +89,7 @@ class PartRecord(db.Model):
 @login_manager.user_loader
 def load_user(uid):
     return User.query.get(int(uid))
+    # return User.query.get(1)
 
 @app.route('/')
 def home():
@@ -99,7 +102,7 @@ def part_check():
 @app.route('/partregis/')
 @login_required
 def part_register():
-    return render_template('partregis-new.html')
+    return render_template('partregis-newer.html', locationList = ['1','2'], projectList = ['ffff', 'ttttt'])
 
 @app.route('/partuse/')
 def part_use():
@@ -108,6 +111,26 @@ def part_use():
 @app.route('/sign-up/', methods=["GET", "POST"])
 def sign_up():
     """ sign up user account """
+
+    print(request.method)
+
+    # check if method is POST
+    if request.method == "POST":
+        
+        # create variable
+        empID = request.form["EmpID"]
+        empName = request.form["EmpName"]
+        empPass = generate_password_hash(request.form["Password"], method="sha256")
+
+        print(f"id : {empID}\nname : {empName}\npass : {empPass}")
+
+        # create an objects then pass variables into user class
+        obj = User(EmpID=empID, Password=empPass, Name=empName, Role=1)
+        
+        db.session.add(obj)
+        db.session.commit()
+
+        return redirect(url_for('login'))
 
     return render_template('sign-up.html')
 
@@ -121,7 +144,7 @@ def reset_pwd():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for(login))
+    return redirect(url_for('login'))
 
 @app.route('/login/', methods=["GET", "POST"])
 def login():
@@ -129,18 +152,16 @@ def login():
     form = LoginForm()
 
     EmpID = form.EmpID.data
-    Password = form.Password.data
-
-    print(f"{EmpID}\n{Password}")
+    EmpPass = form.Password.data
 
     # Validate a form submitted by user
     if form.validate_on_submit():
         # Query a user's username from the database
         emp = User.query.filter_by(EmpID=EmpID).first()
-
+        
         # Check and compare a user's password
         # in a database, if True, log a user in
-        if emp and emp.verify_password(Password=Password):
+        if emp and emp.verify_password(EmpPass):
             # Log a user in after completing verifying a password
             # then flash a message "Successful Login"
             login_user(emp)
@@ -148,7 +169,7 @@ def login():
             flash("Successful Login", "success")
 
             # redirect to homepage
-            return redirect(url_for(home))
+            return redirect(url_for('home'))
         else:
             # show flash message "invalid login" if login gets False
             flash("Invalid Login", "danger")
@@ -156,10 +177,9 @@ def login():
     else:
         # you can print or return something such as an error message
         # In this case, do nothing. But you can do it later
-        print("Not")
+        pass
 
     return render_template("login.html", form=form)
-
 
 if __name__ == "__main__":
     app.run(debug=True)

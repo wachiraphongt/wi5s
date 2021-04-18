@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}<title>Part Register</title>{% endblock title %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-5">
+            <form action="{{url_for('part_register')}}" methid="POST">
+                <!-- Header -->
+                <div>
+                    <h5>Register The Part</h5>
+                </div>
+                <!-- Part Name -->
+                <div class="form-group">
+                    <label>Part Name</label>
+                    <input type="text" class="form-control" name="partName">
+                </div>
+                <!-- Model -->
+                <div class="form-group">
+                    <label>Model</label>
+                    <input type="text" class="form-control" name="model">
+                </div>
+                <!-- Location -->
+                <div class="form-group">
+                    <label>Location</label>
+                    <select class="form-control" name="location">
+                        <option>Choose...</option>
+                        {% if locationList %}
+                        {% for location in locationList %}
+                        <option>{{location}}</option>
+                        {% endfor %}
+                        {% endif %}
+                    </select>
+                </div>
+                <!-- Project -->
+                <div class="form-group">
+                    <label>Project</label>
+                    <select class="form-control" name="project">
+                        <option>Choose...</option>
+                        {% if projectList %}
+                        {% for project in projectList %}
+                        <option>{{project}}</option>
+                        {% endfor %}
+                        {% endif %}
+                    </select>
+                </div>
+                <!-- Quantity -->
+                <div class="form-group">
+                    <label>Quantity</label>
+                    <input type="number" class="form-control" name="quantity">
+                </div>
+                <!-- isSpared -->
+                <div class="form-group">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="checkSpare">
+                        <label class="form-check-label" for="checkSpare">
+                            Spare Part?
+                        </label>
+                    </div>
+                </div>
+                <!-- submit btn -->
+                <button type="submit" class="btn btn-primary">Register Part</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

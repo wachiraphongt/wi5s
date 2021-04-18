@@ -71,6 +71,15 @@
                                 {% endif %}
                             </ul>
                         </li>
+                        <li class="nav-link">
+                            <a class="nav-link" href="#" style="color: blue; font-weight: bold;">
+                                {% if current_user.is_authenticated %}
+                                Hi {{current_user.Name}}!
+                                {% else %}
+                                Not Authenticated
+                                {% endif %}
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 
