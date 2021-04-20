@@ -2,7 +2,7 @@
 """5s System"""
 
 from flask import Flask, render_template, redirect, url_for, flash, request
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy, model
 
 from datetime import datetime
 import random
@@ -99,10 +99,53 @@ def home():
 def part_check():
     return render_template('partcheck-new.html')
 
-@app.route('/partregis/')
+@app.route('/partregis/', methods=["GET", "POST"])
 @login_required
 def part_register():
-    return render_template('partregis-newer.html', locationList = ['1','2'], projectList = ['ffff', 'ttttt'])
+    """ regis part to system """
+
+    print(request.method)
+
+    # check if methid is POST
+    if request.method == "POST":
+        # create variable
+        partName = request.form["partName"]
+        model = request.form["model"]
+        location = request.form["location"]     # value
+        project = request.form["project"]
+        quantity = request.form["quantity"]
+        isSpare = not(request.form.get("checkSpare") != None)
+        
+        obj = PartRecord(
+            PartName=partName,
+            Model=model,
+            Location=location,
+            Project=project,
+            Quantity=quantity,
+            IsSpared=isSpare
+        )
+
+        db.session.add(obj)
+        db.session.commit()
+
+        partList = PartRecord.query.filter_by(Location=int(location)).all()
+
+        print(partList)
+
+        return render_template(
+            'partregis-newer.html',
+            locationList = LocationList.query.all(),
+            projectList = ProjectList.query.all(),
+            selected_location = location,
+            part_list = partList,
+            selected_project = project,
+        )
+
+    return render_template(
+        'partregis-newer.html',
+        locationList = LocationList.query.all(),
+        projectList = ProjectList.query.all(),
+    )
 
 @app.route('/partuse/')
 def part_use():
