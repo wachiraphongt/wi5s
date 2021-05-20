@@ -1,0 +1,47 @@
+<!-- login.html -->
+{% extends 'base-newer.html' %}
+
+{% block title %}<title>Login</title>{% endblock %}
+
+{% block content %}
+
+<!-- <br> -->
+<div class="container" style="align-items: center;">
+    <div class="text-primary mt-3 mb-3 col-lg-5" style="display: flex; justify-content: center;">
+        <h2>WI Part System</h2>
+    </div>
+    <h2>Login</h2>
+    <div class="row">
+        <div class="col-lg-5">
+            <form action="{{url_for('login')}}" method="POST">
+                {{form.csrf_token}}
+                <br>
+                <!-- Employee ID -->
+                <div class="form-group">
+                    <label>Emp. ID</label>
+                    <input type="number" class="form-control" name="EmpID" placeholder="">
+                </div>
+                <br>
+                <!-- Password -->
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" class="form-control" name="Password" placeholder="">
+                </div>
+                <br>
+                <!-- Button for summiting form -->
+                <div style="text-align: center;">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt"></i>&nbsp;&nbsp;Login
+                    </button>
+                </div>
+                <br>
+                <!-- text for choices -->
+                <!-- <div style="text-align: center;">
+                    <p>Didn't have an account ? <a href="{{url_for('sign_up')}}">Sign up</a></p>
+                </div> -->
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

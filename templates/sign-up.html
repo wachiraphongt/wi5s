@@ -1,0 +1,48 @@
+{% extends 'base-newer.html' %}
+
+{% block title %}<title>Add User</title>{% endblock title %}
+
+{% block content %}
+
+<!-- <br> -->
+<div class="container" style="align-items: center;">
+    <h2>Add User</h2>
+    <div class="row">
+        <div class="col-lg-5">
+            <form action="{{url_for('sign_up')}}" method="POST">
+                <br>
+                <!-- EmployeeID -->
+                <div class="from-group">
+                    <label>Emp. ID</label>
+                    <input type="number" class="form-control" name="EmpID" value="{{empID}}">
+                </div>
+                <br>
+                <!-- Name -->
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" class="form-control" name="EmpName" value="{{empName}}">
+                </div>
+                <br>
+                <!-- Password -->
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" class="form-control" name="Password" value="{{empPass}}">
+                </div>
+                <br>
+                <!-- Role -->
+                <div class="form-group">
+                    <label>Role</label>
+                    <input type="number" class="form-control" name="Role" placeholder="" value="{{empRole}}">
+                </div>
+                <br>
+                <!-- Button for summiting form -->
+                <div style="text-align: center;">
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+                <br>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

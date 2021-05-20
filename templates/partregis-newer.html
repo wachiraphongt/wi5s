@@ -1,0 +1,353 @@
+{% extends 'base-newer.html' %}
+
+{% block title %}<title>Part Register</title>{% endblock title %}
+
+{% block content %}
+
+<div class="container" style="align-items: center;">
+    <h2>Add Part</h2>
+    <div class="row">
+        <div class="col-lg-12">
+            <form action="{{url_for('part_register')}}" method="POST">
+                <br>
+                <!-- Part Name -->
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="in_partname" name="partName" value="{{partName}}" onfocus="checkEmpty('in_partname')" onchange="checkEmpty('in_partname')" placeholder="name of part">
+                    <label for="in_partname">Part Name</label>
+                </div>
+                <!-- Model -->
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="in_model" name="model" value="{{model}}" onfocus="checkEmpty('in_model')" onchange="checkEmpty('in_model')" placeholder="model of part">
+                    <label for="in_model">Model</label>
+                </div>
+                <!-- Location -->
+                <div class="form-floating mb-3">
+                    <select class="form-select" id="in_location" name="location" onfocus="checkSelect('in_location')" onchange="checkSelect('in_location')" aria-label="Floating label select example">
+                        <option value="0">Choose...</option>
+                        {% if locationList %}
+                        {% for location in locationList %}
+                        {% if selected_location[0] == location.ID %}
+                        <option value="{{location.ID}}" selected>{{location.Location}}</option>
+                        {% else %}
+                        <option value="{{location.ID}}">{{location.Location}}</option>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                    </select>
+                    <label for="in_location">Location</label>
+                </div>
+                <!-- Project -->
+                <div class="form-floating mb-3">
+                    <select class="form-select" id="in_project" name="project" onfocus="checkSelect('in_project')" onchange="checkSelect('in_project')" aria-label="Floating label select example">
+                        <option value="0">Choose...</option>
+                        {% if projectList %}
+                        {% for project in projectList %}
+                        {% if selected_project == project.ID|string %}
+                        <option value="{{project.ID}}" selected>{{project.Name}}</option>
+                        {% else %}
+                        <option value="{{project.ID}}">{{project.Name}}</option>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                    </select>
+                    <label for="in_project">Project</label>
+                </div>
+                <!-- Quantity -->
+                <div class="form-floating mb-3">
+                    <input type="number" class="form-control" id="in_quantity" name="quantity" value="{{quantity}}" onfocus="checkEmpty('in_quantity')" onchange="checkEmpty('in_quantity')" placeholder="quantity of part">
+                    <label for="in_quantity">Quantity</label>
+                </div>
+                <!-- isSpared -->
+                <div class="form-check mb-3">
+                    {% if isSpare %}
+                    <input class="form-check-input" type="checkbox" id="checkSpare" name="checkSpare" checked>
+                    {% else %}
+                    <input class="form-check-input" type="checkbox" id="checkSpare" name="checkSpare">
+                    {% endif %}
+                    <label class="form-check-label" for="checkSpare">Spare Part</label>
+                </div>
+                <!-- submit btn -->
+                <div style="text-align: center;">
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmModal2" onclick="showConfirm()">
+                        Add
+                    </button>
+                </div>
+
+                <div class="form-group" style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+                    <input type="hidden" name="location_search" value="{{selected_location[0]}}"/>
+                    <input type="hidden" name="btn_identifier" value="add"/>
+                    <!-- <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmModal" onclick="showConfirm()">Add Part</button> -->
+                    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <!-- Modal Header -->
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <!-- Modal Body -->
+                                <div class="modal-body">
+                                    <div id="modal-show-confirm">
+                                        <!-- <p id="modal-text"></p>
+                                        <p id="modal-num"></p> -->
+                                        <div class="table-responsive">
+                                            <table id="table-detail" class="table table-striped table-sm align-middle">
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <th scope="col">Topic</th>
+                                                        <th scope="col">Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row">PartName</th>
+                                                        <td id="tbd_partname"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Model</th>
+                                                        <td id="tbd_model"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Location</th>
+                                                        <td id="tbd_location"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Project</th>
+                                                        <td id="tbd_project"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Qty</th>
+                                                        <td id="tbd_qty"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">isSpared</th>
+                                                        <td id="tbd_isspared">
+                                                            <i id="tbd_isspared_true" class="fas fa-check text-success opa-7"></i>
+                                                            <i id="tbd_isspared_false" class="fas fa-times text-danger opa-7"></i>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div id="modal-show-table">
+                                        <div class="table-responsive">
+                                            <table id="table-detail" class="table table-striped table-sm align-middle">
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <th scope="col">Topic</th>
+                                                        <th scope="col">Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row">ID</th>
+                                                        <td id="tbd_id"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">PartName</th>
+                                                        <td id="tbd_partname"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Model</th>
+                                                        <td id="tbd_model"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Location</th>
+                                                        <td id="tbd_location"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Project</th>
+                                                        <td id="tbd_project"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Qty</th>
+                                                        <td id="tbd_qty"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">isSpared</th>
+                                                        <td id="tbd_isspared"></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Modal Footer -->
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary" id="btn_confirm_add">Yes</button>
+                                </div>
+                            </div>    
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            {% if selected_location[0] != 0 %}
+            <hr>
+            <form action="{{url_for('part_register')}}" method="POST">
+                <!-- Show Part List -->
+                <div class="info-group" style="display:flex; flex-direction: row;">
+                    <h3 class="location_name text-primary" id="location_name">{{selected_location[1]}}</h3>
+                    <div class="part_amount">
+                        <h3 class="text-secondary">Amount  :</h3>&nbsp;&nbsp;
+                        <h3 class="amount-text text-primary">{{part_list|length}}</h3>
+                    </div>
+                </div>
+                {% if part_list|length > 0 %}
+                <div class="table-responsive-sm">
+                    <table id="tb_full_detail" class="table table-striped table-bordered align-middle text-nowrap">
+                        <thead class="thead-light">
+                            <tr class="table-dark">
+                                <th scope="col">ID</th>
+                                <th scope="col">PartName</th>
+                                <th scope="col">Model</th>
+                                <th scope="col">Qty</th>
+                                <!-- <th scope="col">Detail</th> -->
+                                <th scope="col">isSpared</th>
+                                <th scope="col">Project</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for part in part_list %}
+                            <tr>
+                                <th scope="row">{{part.ID}}</th>
+                                <td>{{part.PartName}}</td>
+                                <td>{{part.Model}}</td>
+                                <td>{{part.Quantity}}</td>
+                                <!-- <td>
+                                    <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#confirmModal" onclick="showInfo('{{part.ID}}')">info</button>
+                                    <input type="hidden" id="d_id_{{part.ID}}" value="{{part.ID}}"/>
+                                    <input type="hidden" id="d_partname_{{part.ID}}" value="{{part.PartName}}"/>
+                                    <input type="hidden" id="d_model_{{part.ID}}" value="{{part.Model}}"/>
+                                    <input type="hidden" id="d_location_{{part.ID}}" value="{{part.Location}}"/>
+                                    <input type="hidden" id="d_project_{{part.ID}}" value="{{part.Project}}"/>
+                                    <input type="hidden" id="d_qty_{{part.ID}}" value="{{part.Quantity}}"/>
+                                    {% if part.IsSpared %}
+                                    <input type="hidden" id="d_isspared_{{part.ID}}" value="Yes"/>
+                                    {% else %}
+                                    <input type="hidden" id="d_isspared_{{part.ID}}" value="No"/>
+                                    {% endif %}
+                                </td> -->
+                                {% if part.IsSpared %}
+                                <td><i class="fas fa-check text-success opa-7"></i></td>
+                                {% else %}
+                                <td><i class="fas fa-times text-danger opa-7"></i></td>
+                                {% endif %}
+                                <td>{{part.Project}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    function checkEmpty(input_name) {
+        var val = document.getElementById(input_name).value.trim();
+        if (val == "") {
+            document.getElementById(input_name).value = "";
+            document.getElementById(input_name).className = "form-control is-invalid";
+        }
+        else {
+            document.getElementById(input_name).className = "form-control";
+        }
+    }
+
+    function checkSelect(select_name) {
+        var val = document.getElementById(select_name).value;
+        if (val == "0") {
+            document.getElementById(select_name).className = "form-select is-invalid";
+        }
+        else {
+            document.getElementById(select_name).className = "form-select";
+        }
+    }
+
+    function showConfirm() {
+        // show & hide element
+        document.getElementById("modal-show-confirm").hidden = false;
+        document.getElementById("btn_confirm_add").hidden = false;
+        document.getElementById("modal-show-table").hidden = true;
+        // change header
+        document.getElementById("exampleModalLabel").innerText = "Confirmation";
+        // check data
+        var ini_partname = document.getElementById("in_partname").value.trim();
+        var ini_model = document.getElementById("in_model").value.trim();
+        var ini_quantity = document.getElementById("in_quantity").value.trim();
+        var ini_location = document.getElementById("in_location").value;
+        var ini_project = document.getElementById("in_project").value;
+        // check empty and not select
+        var err = false;
+        if (ini_partname == "") { 
+            document.getElementById("in_partname").className = "form-control is-invalid"; 
+            err = true;
+        }
+        if (ini_model == "") { 
+            document.getElementById("in_model").className = "form-control is-invalid"; 
+            err = true;
+        }
+        if (ini_quantity == "") { 
+            document.getElementById("in_quantity").className = "form-control is-invalid";
+            err = true;
+        }
+        if (ini_location == "0") {
+            document.getElementById("in_location").className = "form-select is-invalid";
+            err = true;
+        }
+        if (ini_project == "0") {
+            document.getElementById("in_project").className = "form-select is-invalid";
+            err = true;
+        }
+        if (err) {
+            return;
+        }
+        // prepare data
+        document.getElementById("tbd_partname").innerHTML = document.getElementById("in_partname").value;
+        document.getElementById("tbd_model").innerHTML = document.getElementById("in_model").value;
+        var locate = document.getElementById("in_location");
+        document.getElementById("tbd_location").innerHTML = locate.options[locate.selectedIndex].text;
+        var proj = document.getElementById("in_project");
+        document.getElementById("tbd_project").innerHTML = proj.options[proj.selectedIndex].text;
+        document.getElementById("tbd_qty").innerHTML = document.getElementById("in_quantity").value;
+        if (document.getElementById("checkSpare").checked) {
+            document.getElementById("tbd_isspared_true").hidden = false;
+            document.getElementById("tbd_isspared_false").hidden = true;
+            // document.getElementById("tbd_isspared").innerHTML = "Yes";
+        }
+        else {
+            document.getElementById("tbd_isspared_true").hidden = true;
+            document.getElementById("tbd_isspared_false").hidden = false;
+            // document.getElementById("tbd_isspared").innerHTML = "No";
+        }
+        
+        // show modal
+        var myModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+        myModal.show();
+    }
+
+    function showInfo(no) {
+        // show & hide element
+        document.getElementById("modal-show-confirm").hidden = true;
+        document.getElementById("btn_confirm_add").hidden = true;
+        document.getElementById("modal-show-table").hidden = false;
+        // change header
+        document.getElementById("exampleModalLabel").innerText = "Detail";
+        // prepare data
+        document.getElementById("tbd_id").innerHTML = document.getElementById("d_id_" + no).value;
+        document.getElementById("tbd_partname").innerHTML = document.getElementById("d_partname_" + no).value;
+        document.getElementById("tbd_model").innerHTML = document.getElementById("d_model_" + no).value;
+        document.getElementById("tbd_location").innerHTML = document.getElementById("d_location_" + no).value;
+        document.getElementById("tbd_project").innerHTML = document.getElementById("d_project_" + no).value;
+        document.getElementById("tbd_qty").innerHTML = document.getElementById("d_qty_" + no).value;
+        document.getElementById("tbd_isspared").innerHTML = document.getElementById("d_isspared_" + no).value;
+    }
+</script>
+
+{% endblock content %}

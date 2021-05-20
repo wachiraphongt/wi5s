@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}<title>Part Check</title>{% endblock title %}
+
+{% block content %}
+<div class="container d-flex h-100">
+    <h2>Scan QR Code on your responsible area to check.</h2>
+</div>
+
+<div class="container">
+    <input id="single" type="text" size="50" class="form-control">
+</div>
+<div class="container">
+    <div class="btn-group">
+        <button type="button" class="qrcode-reader btn btn-primary" id="openreader-single" data-qrr-target="#single"
+        data-qrr-audio-feedback="false" data-qrr-qrcode-regexp="^https?:\/\/">Read QRCode</button>
+    </div>
+</div>
+
+<div class="container">
+    <div class="btn-group">
+        <button type="button" class="btn btn-success btn-lg">Confirm</button>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $.qrCodeReader.jsQRpath = "https://cdn.staticaly.com/gh/mauntrelio/qrcode-reader/master/dist/js/jsQR/jsQR.min.js";
+        // bind all elements of a given class
+        $(".qrcode-reader").qrCodeReader();
+    });
+</script>
+{% endblock content %}
