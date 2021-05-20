@@ -2,27 +2,35 @@ from app import LocationList, ProjectList, db
 
 location_list = [
     # Assembly 1
-    "A1CB1A", "A1CB1B", "A1CB1C", "A1CB1D", "A1CB1E",  "A1CB1F", "A1CB1G", "A1CB1H",
-    "A1CB2A", "A1CB2B", "A1CB2C", "A1CB2D", "A1CB2E",  "A1CB2F",
-    "A1CB3A", "A1CB3B", "A1CB3C", "A1CB3D", "A1CB3E",  "A1CB3F", "A1CB3G", "A1CB3H",
-    "A1CB4A", "A1CB4B", "A1CB4C", "A1CB4D", "A1CB4E",  "A1CB4F", "A1CB4G", "A1CB4H",
-    "A1CB5A", "A1CB5B", "A1CB5C", "A1CB5D", "A1CB5E",  "A1CB5F", "A1CB5G", "A1CB5H",
-    "A1CB6A", "A1CB6B", "A1CB6C", "A1CB6D", "A1CB6E",  "A1CB6F", "A1CB6G", "A1CB6H",
-    "A1CB7A", "A1CB7B", "A1CB7C", "A1CB7D", "A1CB7E",  "A1CB7F", "A1CB7G", "A1CB7H",
+    "CB1A", "CB1B", "CB1C", "CB1D", "CB1E",  "CB1F", "CB1G", "CB1H",
+    "CB2A", "CB2B", "CB2C", "CB2D", "CB2E",  "CB2F",
+    "CB3A", "CB3B", "CB3C", "CB3D", "CB3E",  "CB3F", "CB3G", "CB3H",
+    "CB4A", "CB4B", "CB4C", "CB4D", "CB4E",  "CB4F", "CB4G", "CB4H",
+    "CB5A", "CB5B", "CB5C", "CB5D", "CB5E",  "CB5F", "CB5G", "CB5H",
+    "CB6A", "CB6B", "CB6C", "CB6D", "CB6E",  "CB6F", "CB6G", "CB6H",
+    "CB7A", "CB7B", "CB7C", "CB7D", "CB7E",  "CB7F", "CB7G", "CB7H",
     # Assembly 2
-    "A2CB1A", "A2CB1B", "A2CB1C", "A2CB1D", "A2CB1E",  "A2CB1F", "A2CB1G", "A2CB1H",
-    "A2CB2A", "A2CB2B", "A2CB2C", "A2CB2D", "A2CB2E",  "A2CB2F", "A2CB2G", "A2CB2H",
-    "A2CB3A", "A2CB3B", "A2CB3C", "A2CB3D", "A2CB3E",  "A2CB3F",
-    "A2CB4A", "A2CB4B", "A2CB4C", "A2CB4D", "A2CB4E",  "A2CB4F",
-    "A2CB5A", "A2CB5B", "A2CB5C", "A2CB5D", "A2CB5E",  "A2CB5F", "A2CB5G", "A2CB5H",
-    "A2CB6A", "A2CB6B", "A2CB6C", "A2CB6D", "A2CB6E",  "A2CB6F", "A2CB6G", "A2CB6H",
-    "A2CB7A", "A2CB7B", "A2CB7C", "A2CB7D", "A2CB7E",  "A2CB7F", "A2CB7G", "A2CB7H",
+    "CB8A", "CB8B", "CB8C", "CB8D", "CB8E",  "CB8F", "CB8G", "CB8H",
+    "CB9A", "CB9B", "CB9C", "CB9D", "CB9E",  "CB9F", "CB9G", "CB9H",
+    "CB10A", "CB10B", "CB10C", "CB10D", "CB10E",  "CB10F",
+    "CB11A", "CB11B", "CB11C", "CB11D", "CB11E",  "CB11F",
+    "CB12A", "CB12B", "CB12C", "CB12D", "CB12E",  "CB12F", "CB12G", "CB12H",
+    "CB13A", "CB13B", "CB13C", "CB13D", "CB13E",  "CB13F", "CB13G", "CB13H",
+    "CB14A", "CB14B", "CB14C", "CB14D", "CB14E",  "CB14F", "CB14G", "CB14H",
     # Assembly 3
-    "A3CB1A", "A3CB1B", "A3CB1C", "A3CB1D",
-    "A3CB2A", "A3CB2B", "A3CB2C", "A3CB2D",
-    "A3CB3A", "A3CB3B", "A3CB3C", "A3CB3D",
-    "A3CB4A", "A3CB4B", "A3CB4C", "A3CB4D",
+    "CB15A", "CB15B", "CB15C", "CB15D",
+    "CB16A", "CB16B", "CB16C", "CB16D",
+    "CB17A", "CB17B", "CB17C", "CB17D",
+    "CB18A", "CB18B", "CB18C", "CB18D",
 ]
+
+# for i in range(len(location_list)):
+#     print(f"{i+1}:{location_list[i]}")
+
+#     obj = LocationList.query.filter_by(ID=i+1).first()
+#     obj.Location = location_list[i]
+#     db.session.commit()
+
 
 # for locate in location_list:
 #     obj = LocationList(Location=locate)
@@ -170,15 +178,15 @@ project_all = [
     ],
 ]
 
-for project in project_all:
-    owner = project[0]
-    proj = project[1]
+# for project in project_all:
+#     owner = project[0]
+#     proj = project[1]
 
-    print(f"Owner : {owner}")
-    for a in proj:
-        print(a)
-    #     obj = ProjectList(Name=a, Owner=owner)
-    #     db.session.add(obj)
+#     print(f"Owner : {owner}")
+#     for a in proj:
+#         print(a)
+#     #     obj = ProjectList(Name=a, Owner=owner)
+#     #     db.session.add(obj)
 
-    # db.session.commit()
-    print("\n")
+#     # db.session.commit()
+#     print("\n")

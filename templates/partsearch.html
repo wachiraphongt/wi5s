@@ -1,0 +1,320 @@
+{% extends 'base-newer.html' %}
+
+{% block title %}
+<title>Part Search</title>
+{% endblock title %}
+
+{% block content %}
+<div class="container" style="align-items: center;">
+    <h2>Search Part</h2>
+    <div class="row">
+        <div class="col-lg-12">
+            <form action="{{url_for('part_search')}}" method="POST">
+                <br>
+                <!-- Location -->
+                <!-- <div class="input-group mb-3">
+                    <span class="input-group-text">
+                        Location
+                    </span>
+                    <input type="text" class="form-control" list="datalistOptions" id="searchLocationList" placeholder="..." value="{{selected_location[1]}}" aria-label="Recipient's username" aria-describedby="button-addon2">
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">
+                        <i class="fas fa-search"></i>&nbsp;&nbsp;Search
+                    </button>
+                </div>
+                <datalist id="datalistOptions">
+                    {% if locationList %}
+                    {% for location in locationList %}
+                    {% if selected_location[0] == location.ID %}
+                    <option data-value="{{location.ID}}" value="{{location.Location}}" selected></option>
+                    {% else %}
+                    <option data-value="{{location.ID}}" value="{{location.Location}}"></option>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                </datalist> -->
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">
+                        Location
+                    </span>
+                    <select class="form-control" name="location_search">
+                        <option value="0">Choose...</option>
+                        {% if locationList %}
+                        {% for location in locationList %}
+                        {% if selected_location[0] == location.ID %}
+                        <option value="{{location.ID}}" selected>{{location.Location}}</option>
+                        {% else %}
+                        <option value="{{location.ID}}">{{location.Location}}</option>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                    </select>
+                    <button class="btn btn-outline-secondary" type="submit" id="button-addon2">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <input type="hidden" name="btn_identifier" value="search" />
+            </form>
+
+            <hr>
+
+            {% if selected_location[0] != 0 %}
+            <form action="{{url_for('part_search')}}" method="POST">
+                <!-- Show Part List -->
+                <div class="info-group">
+                    <h3 class="location_name text-primary" id="location_name">{{selected_location[1]}}</h3>
+                    <div class="part_amount">
+                        <h3 class="text-secondary">Amount :</h3>&nbsp;&nbsp;
+                        <h3 class="amount-text text-primary">{{part_list|length}}</h3>
+                    </div>
+                </div>
+
+                {% if part_list|length > 0 %}
+                <div id="switchTableView">
+                    <div class="form-check form-switch mb-1">
+                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault"
+                            onchange="showCheck()">
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Full Detail</label>
+                    </div>
+                </div>
+
+                <!-- Less Detail -->
+                <div class="table-responsive-sm" id="tb_less_detail">
+                    <table class="table table-striped table-bordered align-middle text-nowrap">
+                        <thead class="thead-light">
+                            <tr class="table-dark">
+                                <th scope="col">ID</th>
+                                <th scope="col">PartName</th>
+                                <th scope="col">Qty</th>
+                                <!-- <th scope="col">Location</th> -->
+                                <th scope="col">Detail</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for part in part_list %}
+                            <tr>
+                                <th scope="row">{{part.ID}}</th>
+                                <td>{{part.PartName}}</td>
+                                <td>{{part.Quantity}}</td>
+                                <!-- <td>{{selected_location[1]}}</td> -->
+                                <td>
+                                    <a role="button" class="btn btn-outline-primary btn-sm btn-table-row" href="#"
+                                        style="width: 100%;" data-bs-toggle="modal" data-bs-target="#confirmModal"
+                                        onclick="showInfo('{{part.ID}}')">info</a>
+                                    <input type="hidden" id="d_id_{{part.ID}}" value="{{part.ID}}" />
+                                    <input type="hidden" id="d_partname_{{part.ID}}" value="{{part.PartName}}" />
+                                    <input type="hidden" id="d_model_{{part.ID}}" value="{{part.Model}}" />
+                                    <input type="hidden" id="d_location_{{part.ID}}" value="{{part.Location}}" />
+                                    <input type="hidden" id="d_project_{{part.ID}}" value="{{part.Project}}" />
+                                    <input type="hidden" id="d_qty_{{part.ID}}" value="{{part.Quantity}}" />
+                                    {% if part.IsSpared %}
+                                    <input type="hidden" id="d_isspared_{{part.ID}}" value="Yes" />
+                                    {% else %}
+                                    <input type="hidden" id="d_isspared_{{part.ID}}" value="No" />
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Full Detail -->
+                <div class="table-responsive" id="tb_full_detail" hidden>
+                    <table class="table table-striped table-bordered align-middle text-nowrap">
+                        <thead class="thead-light">
+                            <tr class="table-dark">
+                                <th scope="col">Part_ID</th>
+                                <th scope="col">PartName</th>
+                                <th scope="col">Model</th>
+                                <th scope="col">Qty</th>
+                                <th scope="col">isSpared</th>
+                                <th scope="col">Project</th>
+                                <th scope="col">...</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for part in part_list %}
+                            <tr>
+                                <th scope="row">{{part.ID}}</th>
+                                <td>{{part.PartName}}</td>
+                                <td>{{part.Model}}</td>
+                                <td>{{part.Quantity}}</td>
+                                {% if part.IsSpared %}
+                                <td><i class="fas fa-check text-success opa-7"></i></td>
+                                {% else %}
+                                <td><i class="fas fa-times text-danger opa-7"></i></td>
+                                {% endif %}
+                                <td>{{part.Project}}</td>
+                                <td>
+                                    {% if part_editable[part.ID|string] > 0 %}
+                                    <a role="button" class="btn btn-outline-primary btn-sm btn-table-row" href="#"
+                                        style="width: 100%;" onclick="showData(this)"
+                                        data-part_id="{{part.ID}}" data-part_name="{{part.PartName}}"
+                                        data-part_model="{{part.Model}}" data-part_quantity="{{part.Quantity}}"
+                                        data-part_isspared={{part.IsSpared}} data-part_iseditable="{{part_editable[part.ID|string]}}"">
+                                        <!-- data-bs-toggle="modal" data-bs-target="#confirmEdit"> -->
+                                        edit
+                                    </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
+
+                <div class="form-group"
+                    style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+                    <input type="hidden" name="location_search" value="{{selected_location[0]}}" />
+                    <input type="hidden" name="btn_identifier" value="add" />
+                    <button type="button" class="btn btn-success mt-3" data-bs-toggle="modal"
+                        data-bs-target="#confirmModal" onclick="showConfirm()">
+                        <i class="fas fa-plus-square"></i>&nbsp;&nbsp;Add Part
+                    </button>
+                    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <!-- Modal Header -->
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <!-- Modal Body -->
+                                <div class="modal-body">
+                                    <div id="modal-show-confirm">
+                                        <p id="modal-text"></p>
+                                        <p id="modal-num"></p>
+                                    </div>
+                                    <div id="modal-show-table">
+                                        <div class="table-responsive">
+                                            <table id="table-detail" class="table table-striped table-sm align-middle">
+                                                <thead class="thead-light">
+                                                    <tr class="table-dark">
+                                                        <th scope="col">Topic</th>
+                                                        <th scope="col">Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row">Part_ID</th>
+                                                        <td id="tbd_id"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">PartName</th>
+                                                        <td id="tbd_partname"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Model</th>
+                                                        <td id="tbd_model"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Location</th>
+                                                        <td id="tbd_location"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Project</th>
+                                                        <td id="tbd_project"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Qty</th>
+                                                        <td id="tbd_qty"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">isSpared</th>
+                                                        <td id="tbd_isspared">
+                                                            <i id="tbd_isspared_true"
+                                                                class="fas fa-check text-success opa-7"></i>
+                                                            <i id="tbd_isspared_false"
+                                                                class="fas fa-times text-danger opa-7"></i>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Modal Footer -->
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary" id="btn_confirm_add">Yes</button>
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script> -->
+
+<script>
+    // $(document).ready(function() {
+    //     $('#test_table').DataTable( {
+    //         select: true
+    //     });
+    // });
+
+    function showConfirm() {
+        // show & hide element
+        document.getElementById("modal-show-confirm").hidden = false;
+        document.getElementById("btn_confirm_add").hidden = false;
+        document.getElementById("modal-show-table").hidden = true;
+        // change header
+        document.getElementById("exampleModalLabel").innerText = "Confirmation";
+        // get location
+        var loName = document.getElementById("location_name").innerText;
+        // prepare data
+        var str = "Do you want to add part to [ " + loName + " ] ?";
+        // show data
+        document.getElementById("modal-text").innerHTML = str;
+    }
+
+    function showInfo(no) {
+        // show & hide element
+        document.getElementById("modal-show-confirm").hidden = true;
+        document.getElementById("btn_confirm_add").hidden = true;
+        document.getElementById("modal-show-table").hidden = false;
+        // change header
+        document.getElementById("exampleModalLabel").innerText = "Detail";
+        // prepare data
+        document.getElementById("tbd_id").innerHTML = document.getElementById("d_id_" + no).value;
+        document.getElementById("tbd_partname").innerHTML = document.getElementById("d_partname_" + no).value;
+        document.getElementById("tbd_model").innerHTML = document.getElementById("d_model_" + no).value;
+        document.getElementById("tbd_location").innerHTML = document.getElementById("d_location_" + no).value;
+        document.getElementById("tbd_project").innerHTML = document.getElementById("d_project_" + no).value;
+        document.getElementById("tbd_qty").innerHTML = document.getElementById("d_qty_" + no).value;
+        var status = document.getElementById("d_isspared_" + no).value;
+        if (status == "Yes") {
+            document.getElementById("tbd_isspared_true").hidden = false;
+            document.getElementById("tbd_isspared_false").hidden = true;
+        }
+        else {
+            document.getElementById("tbd_isspared_true").hidden = true;
+            document.getElementById("tbd_isspared_false").hidden = false;
+        }
+        // document.getElementById("tbd_isspared").innerHTML = document.getElementById("d_isspared_" + no).value;
+    }
+
+    function showCheck() {
+        var status = document.getElementById('flexSwitchCheckDefault').checked;
+        document.getElementById('tb_less_detail').hidden = status;
+        document.getElementById('tb_full_detail').hidden = !status;
+    }
+
+    function showData(obj) {
+        console.log(`${obj.dataset.part_id}:${obj.dataset.part_name}:${obj.dataset.part_model}:${obj.dataset.part_quantity}:${obj.dataset.part_isspared}`)
+    }
+</script>
+
+{% endblock content %}

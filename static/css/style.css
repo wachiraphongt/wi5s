@@ -1,0 +1,67 @@
+.info-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.info-group > .location_name {
+    margin-left: 2px;
+}
+
+.info-group > .part_amount {
+    display: flex;
+    margin-right: 2px;
+}
+
+#tb_less_detail, #tb_full_detail, #table-detail {
+    text-align: center;
+}
+
+/* table tr {
+    max-height: 5px;
+    height: 5px;
+} */
+
+#table-detail {
+    white-space: normal;
+}
+
+/* @import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap'); */
+
+body {
+    padding-bottom: 50px;
+
+    /* font-family: 'Ubuntu', sans-serif !important; */
+}
+
+#searchLocationList {
+    text-transform: uppercase;
+}
+
+.opa-7 {
+    opacity: 0.7;
+}
+
+.bt-menu-home {
+    width: 90%; 
+    font-size: 24px !important; 
+    font-weight: 500 !important;
+}
+
+.icon-menu-nav {
+    width: 35px;
+}
+
+.project-list-table {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.btn-table-row {
+    padding: 0 6px !important;
+}
+
+/* .table-project-list {
+    max-height: 500px;
+} */

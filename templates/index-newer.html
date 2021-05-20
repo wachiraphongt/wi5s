@@ -1,0 +1,40 @@
+{% extends 'base-newer.html' %}
+
+{% block title %}
+<title>Home</title>
+{% endblock title %}
+
+{% block content %}
+<div class="container" style="text-align: center;">
+    
+    <a class="btn btn-outline-success bt-menu-home mb-3" href="{{url_for('part_search')}}" role="button">
+        <i class="fas fa-search search-icon"></i>&nbsp;&nbsp;&nbsp;Search Part
+    </a>
+    
+    <a class="btn btn-outline-success bt-menu-home mb-3" href="{{url_for('part_register')}}" role="button">
+        <i class="fas fa-plus-square"></i>&nbsp;&nbsp;&nbsp;Add Part
+    </a>
+
+    <a class="btn btn-outline-success bt-menu-home mb-3" href="{{url_for('project_list')}}" role="button">
+        <i class="fas fa-tasks"></i>&nbsp;&nbsp;&nbsp;Project List
+    </a>
+
+    <!-- <a class="btn btn-outline-success bt-menu-home mb-3" href="{{url_for('add_location')}}" role="button">
+        <i class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;&nbsp;Add Location
+    </a> -->
+
+    <!-- <a class="btn btn-info" href="{{url_for('part_use')}}" role="button" style="width: 90%; font-size: 24px; font-weight: 500;">Part Use</a>
+    <br><br>
+    <a class="btn btn-info" href="{{url_for('part_check')}}" role="button" style="width: 90%; font-size: 24px; font-weight: 500;">Part Check</a> -->
+
+    {% if current_user.Role == 99 %}
+    <hr>
+    <a class="btn btn-outline-primary bt-menu-home mb-3" href="{{url_for('sign_up')}}" role="button">
+        <i class="fas fa-user-plus"></i>&nbsp;&nbsp;&nbsp;Add User
+    </a>
+    <a class="btn btn-outline-primary bt-menu-home mb-3" href="{{url_for('show_log')}}" role="button">
+        <i class="fas fa-history"></i>&nbsp;&nbsp;&nbsp;Log
+    </a>
+    {% endif %}
+</div>
+{% endblock content %}

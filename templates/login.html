@@ -1,5 +1,5 @@
 <!-- login.html -->
-{% extends 'base.html' %}
+{% extends 'base-newer.html' %}
 
 {% block title %}<title>Login</title>{% endblock %}
 
@@ -7,6 +7,9 @@
 
 <!-- <br> -->
 <div class="container" style="align-items: center;">
+    <div class="text-primary mt-3 mb-3 col-lg-5" style="display: flex; justify-content: center;">
+        <h2>WI Part System</h2>
+    </div>
     <h2>Login</h2>
     <div class="row">
         <div class="col-lg-5">
@@ -18,22 +21,24 @@
                     <label>Emp. ID</label>
                     <input type="number" class="form-control" name="EmpID" placeholder="">
                 </div>
-                <!-- Password -->
                 <br>
+                <!-- Password -->
                 <div class="form-group">
                     <label>Password</label>
                     <input type="password" class="form-control" name="Password" placeholder="">
                 </div>
-                <!-- Button for summiting form -->
                 <br>
+                <!-- Button for summiting form -->
                 <div style="text-align: center;">
-                    <button type="submit" class="btn btn-primary">Login</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt"></i>&nbsp;&nbsp;Login
+                    </button>
                 </div>
                 <br>
                 <!-- text for choices -->
-                <div style="text-align: center;">
+                <!-- <div style="text-align: center;">
                     <p>Didn't have an account ? <a href="{{url_for('sign_up')}}">Sign up</a></p>
-                </div>
+                </div> -->
             </form>
         </div>
     </div>
